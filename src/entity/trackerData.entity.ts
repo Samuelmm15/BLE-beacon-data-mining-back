@@ -1,19 +1,26 @@
-import { Entity, ObjectIdColumn, ObjectId, Column } from 'typeorm';
+import { ObjectId } from "mongodb";
+import { Entity, ObjectIdColumn, Column, Index } from "typeorm";
+
+interface location {
+  latitude: number;
+  longitude: number;
+  altitude: number;
+  bearing: number;
+  speed: number;
+}
 
 @Entity()
 export class TrackerData {
   @ObjectIdColumn()
-  id: ObjectId;
+  id: ObjectId = new ObjectId;
+
+  @Index({unique: true})
+  @Column()
+  droneId!: string;
 
   @Column()
-  time: Date;
+  time!: Date;
 
   @Column()
-  location: {
-    latitude: number;
-    longitude: number;
-    altitude: number;
-    bearing: number;
-    speed: number;
-  };
+  location!: location;
 }

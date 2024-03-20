@@ -1,19 +1,21 @@
 {
   "name": "BLE-beacon-data-mining-back",
   "version": "1.0.0",
-  "author": "Samuel Martín Morales",
+  "author": "",
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node src/index.ts",
+    "typeorm": "./node_modules/.bin/typeorm"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "@nestjs/typeorm": "^10.0.2",
     "mongodb": "^6.5.0",
     "reflect-metadata": "^0.2.1",
+    "ts-node": "^10.9.2",
     "typeorm": "^0.3.20"
   }
 }
