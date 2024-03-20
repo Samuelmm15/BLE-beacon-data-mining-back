@@ -47,7 +47,7 @@ createConnection().then(async connection => {
     // Prueba de inserción de un nuevo documento Beacon
     console.log("Inserting a new Beacon into the database...");
     const beacon = new Beacon();
-    beacon.beaconId = "2";
+    beacon.beaconId = "2"; 
     beacon.messages = [beaconMessage];
     beacon.messages = [beaconMessage2];
     await connection.manager.save(beacon);
