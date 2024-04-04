@@ -1,7 +1,7 @@
 import {createConnection} from "typeorm";
-import { TrackerData } from "./entity/trackerData.entity";
-import { BeaconMessage } from "./entity/beaconMessage.entity";
-import { Beacon } from "./entity/beacon.entity";
+import { TrackerData } from "./typeORM/entity/trackerData.entity";
+import { BeaconMessage } from "./typeORM/entity/beaconMessage.entity";
+import { Beacon } from "./typeORM/entity/beacon.entity";
 import { validateOrReject } from "class-validator";
 
 createConnection().then(async connection => {

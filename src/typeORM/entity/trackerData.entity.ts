@@ -1,6 +1,5 @@
 import { ObjectId } from "mongodb";
 import { Entity, ObjectIdColumn, Column, Index } from "typeorm";
-import { IsBetween1And5 } from "../decorator/IsBetween1and5";
 import { IsInt, Min, Max } from "class-validator";
 
 export default interface location {
