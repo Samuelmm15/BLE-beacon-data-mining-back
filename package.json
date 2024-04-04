@@ -1,7 +1,7 @@
 {
   "name": "BLE-beacon-data-mining-back",
   "version": "1.0.0",
-  "author": "",
+  "author": "Samuel Martín Morales",
   "description": "",
   "main": "index.ts",
   "scripts": {
@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@nestjs/typeorm": "^10.0.2",
+    "class-validator": "^0.14.1",
     "mongodb": "^6.5.0",
     "reflect-metadata": "^0.2.1",
     "ts-node": "^10.9.2",

@@ -2,58 +2,56 @@ import {createConnection} from "typeorm";
 import { TrackerData } from "./entity/trackerData.entity";
 import { BeaconMessage } from "./entity/beaconMessage.entity";
 import { Beacon } from "./entity/beacon.entity";
+import { validateOrReject } from "class-validator";
 
 createConnection().then(async connection => {
-    // Prueba de inserción de un nuevo documento TrackerData
-    console.log("Inserting a new TrackerData into the database...");
+    // Prueba de inserción de un nuevo beacon
+    // const beacon = new Beacon();
+    // beacon.beaconId = "beacon1";
+    // beacon.location = {
+    //     latitude: 0,
+    //     longitude: 0,
+    //     altitude: 0,
+    //     bearing: 0,
+    //     speed: 0
+    // };
+    // await connection.manager.save(beacon);
+    // console.log("Beacon saved: ", beacon);
+
+    // Prueba de un nuevo TrackerData
     const trackerData = new TrackerData();
-    trackerData.droneId = "3";
+    trackerData.droneId = "drone4";
     trackerData.time = new Date();
     trackerData.location = {
-        latitude: 37.7749,
-        longitude: 122.4194,
+        latitude: 0,
+        longitude: 0,
         altitude: 0,
         bearing: 0,
         speed: 0
     };
+    trackerData.rssi = 3;
     await connection.manager.save(trackerData);
-    console.log("Saved a new TrackerData with id: " + trackerData.id);
-    console.log("Loading TrackerData from the database...");
-    const trackerDataRepository = connection.getRepository(TrackerData);
-    const trackerDatas = await trackerDataRepository.find();
-    console.log("Loaded TrackerDatas: ", trackerDatas);
+    console.log("TrackerData saved: ", trackerData);
 
-    // Prueba de inserción de un nuevo documento beaconMessage
-    console.log("Inserting a new BeaconMessage into the database...");
-    const beaconMessage = new BeaconMessage();
-    beaconMessage.message = "Hola";
-    await connection.manager.save(beaconMessage);
-    console.log("Saved a new BeaconMessage with id: " + beaconMessage.id);
-    console.log("Loading BeaconMessage from the database...");
-    const beaconMessageRepository = connection.getRepository(BeaconMessage);
-    const beaconMessages = await beaconMessageRepository.find();
-    console.log("Loaded BeaconMessages: ", beaconMessages);
-
-    console.log("Inserting a new BeaconMessage into the database...");
-    const beaconMessage2 = new BeaconMessage();
-    beaconMessage2.message = "Adiós";
-    await connection.manager.save(beaconMessage2);
-    console.log("Saved a new BeaconMessage with id: " + beaconMessage2.id);
-    console.log("Loading BeaconMessage from the database...");
-    const beaconMessageRepository2 = connection.getRepository(BeaconMessage);
-    const beaconMessages2 = await beaconMessageRepository2.find();
-    console.log("Loaded BeaconMessages: ", beaconMessages2);
-
-    // Prueba de inserción de un nuevo documento Beacon
-    console.log("Inserting a new Beacon into the database...");
-    const beacon = new Beacon();
-    beacon.beaconId = "2"; 
-    beacon.messages = [beaconMessage];
-    beacon.messages = [beaconMessage2];
-    await connection.manager.save(beacon);
-    console.log("Saved a new Beacon with id: " + beacon.id);
-    console.log("Loading Beacon from the database...");
-    const beaconRepository = connection.getRepository(Beacon);
-    const beacons = await beaconRepository.find();
+    // Prueba de un segundo TrackerData
+    const trackerData2 = new TrackerData();
+    trackerData2.droneId = "drone5";
+    trackerData2.time = new Date();
+    trackerData2.location = {
+        latitude: 0,
+        longitude: 0,
+        altitude: 0,
+        bearing: 0,
+        speed: 0
+    };
+    trackerData2.rssi = 6;
+    try {
+        await validateOrReject(trackerData2);
+        // Si la validación es exitosa, guarda la entidad
+        await connection.manager.save(trackerData2);
+        console.log("TrackerData2 saved: ", trackerData2);
+    } catch (errors) {
+        console.log('Se han detectado errores de validación:', errors);
+    }
 
 }).catch(error => console.log("Error: ", error));

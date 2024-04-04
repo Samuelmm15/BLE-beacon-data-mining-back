@@ -1,7 +1,9 @@
 import { ObjectId } from "mongodb";
 import { Entity, ObjectIdColumn, Column, Index } from "typeorm";
+import { IsBetween1And5 } from "../decorator/IsBetween1and5";
+import { IsInt, Min, Max } from "class-validator";
 
-interface location {
+export default interface location {
   latitude: number;
   longitude: number;
   altitude: number;
@@ -12,9 +14,9 @@ interface location {
 @Entity()
 export class TrackerData {
   @ObjectIdColumn()
-  id: ObjectId = new ObjectId;
+  id: ObjectId = new ObjectId();
 
-  @Index({unique: true})
+  @Index({ unique: true })
   @Column()
   droneId!: string;
 
@@ -23,4 +25,10 @@ export class TrackerData {
 
   @Column()
   location!: location;
+
+  @Column()
+  @IsInt()
+  @Min(1)
+  @Max(5)
+  rssi!: number;
 }
