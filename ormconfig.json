@@ -5,13 +5,13 @@
   "synchronize": true,
   "logging": false,
   "entities": [
-    "src/entity/*.ts"
+    "src/typeORM/entity/*.ts"
   ],
   "subscribers": [
-    "src/subscriber/*.ts"
+    "src/typeORM/subscriber/*.ts"
   ],
   "migrations": [
-    "src/migration/*.ts"
+    "src/typeORM/migration/*.ts"
   ],
   "cli": {
     "entitiesDir": "src/entity",
