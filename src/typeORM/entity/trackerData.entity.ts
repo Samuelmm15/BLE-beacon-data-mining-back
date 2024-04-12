@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { Entity, ObjectIdColumn, Column, Index } from "typeorm";
+import { Entity, ObjectIdColumn, Column } from "typeorm";
 import { IsInt, Min, Max } from "class-validator";
 
 export default interface location {
@@ -13,9 +13,8 @@ export default interface location {
 @Entity()
 export class TrackerData {
   @ObjectIdColumn()
-  id: ObjectId = new ObjectId();
+  _id!: ObjectId;
 
-  // @Index({ unique: false })
   @Column()
   droneId!: string;
 

@@ -5,7 +5,7 @@ import { ObjectId } from 'mongodb';
 @Entity()
 export class BeaconMessage {
   @ObjectIdColumn()
-  id: ObjectId = new ObjectId;
+  _id!: ObjectId;
 
   @Column()
   message!: string;

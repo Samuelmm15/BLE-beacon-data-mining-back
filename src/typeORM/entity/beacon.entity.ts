@@ -6,7 +6,7 @@ import location from './trackerData.entity';
 @Entity()
 export class Beacon {
   @ObjectIdColumn()
-  id: ObjectId = new ObjectId;
+  _id!: ObjectId;
 
   @Column({ unique: true })
   beaconId!: string;
