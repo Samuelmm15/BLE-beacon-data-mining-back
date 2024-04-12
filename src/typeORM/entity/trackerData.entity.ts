@@ -15,7 +15,7 @@ export class TrackerData {
   @ObjectIdColumn()
   id: ObjectId = new ObjectId();
 
-  @Index({ unique: true })
+  // @Index({ unique: false })
   @Column()
   droneId!: string;
 
