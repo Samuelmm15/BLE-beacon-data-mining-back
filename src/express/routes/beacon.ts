@@ -24,6 +24,27 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Operación de obtención de un beacon específico mediante el identificador del documento (GetBeaconID)
+router.get("/:id", async (req, res) => {
+  const beaconRepository = getRepository(Beacon);
+
+  try {
+    const id = new ObjectId(req.params.id);
+    const beaconById = await beaconRepository.findOne({
+      where: { _id: id },
+    });
+
+    if (!beaconById) {
+      return res.status(404).json({ message: "Documento no encontrado" });
+    }
+
+    res.json(beaconById).status(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+});
+
 // Operación de creación de un nuevo beacon (CreateBeacon)
 router.post("/", async (req, res) => {
   const beaconRepository = getRepository(Beacon);
