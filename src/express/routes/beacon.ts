@@ -110,4 +110,26 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// Operación de eliminación de un beacon (DeleteBeacon)
+router.delete("/:id", async (req, res) => {
+  const beaconRepository = getRepository(Beacon);
+
+  try {
+    const id = new ObjectId(req.params.id);
+    const beaconById = await beaconRepository.findOne({
+      where: { _id: id },
+    });
+
+    if (!beaconById) {
+      return res.status(404).json({ message: "Documento no encontrado" });
+    }
+
+    await beaconRepository.delete(id);
+    res.json(beaconById).status(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+});
+
 export default router;
