@@ -4,6 +4,7 @@ import { createConnection } from "typeorm";
 
 import trackerDataRouter from "../routes/trackerData";
 import beaconMessageRouter from "../routes/beaconMessage";
+import beaconRouter from "../routes/beacon";
 
 createConnection()
   .then(() => {
@@ -26,6 +27,7 @@ app.use(express.json());
 
 app.use("/api/trackerData", trackerDataRouter);
 app.use("/api/beaconMessage", beaconMessageRouter);
+app.use("/api/beacon", beaconRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
