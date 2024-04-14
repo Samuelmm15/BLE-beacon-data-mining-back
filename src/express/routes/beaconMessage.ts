@@ -86,4 +86,26 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// Operación de eliminación de un mensaje del beacon (DeleteMessage)
+router.delete("/:id", async (req, res) => {
+  const beaconMessageRepository = getRepository(BeaconMessage);
+
+  try {
+    const id = new ObjectId(req.params.id);
+    const beaconMessageById = await beaconMessageRepository.findOne({
+      where: { _id: id },
+    });
+
+    if (!beaconMessageById) {
+      return res.status(404).json({ message: "Documento no encontrado" });
+    }
+
+    await beaconMessageRepository.delete(id);
+    res.json(beaconMessageById).status(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+});
+
 export default router;
