@@ -1,7 +1,7 @@
 {
   "name": "BLE-beacon-data-mining-back",
   "version": "0.1.1",
-  "author": "Samuel Martín Morales",
+  "author": "Samuel Martín Morales alu0101359526@ull.edu.es",
   "description": "",
   "main": "index.ts",
   "scripts": {

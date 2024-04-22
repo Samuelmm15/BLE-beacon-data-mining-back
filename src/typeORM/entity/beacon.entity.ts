@@ -12,6 +12,9 @@ export class Beacon {
   beaconId!: string;
 
   @Column()
+  time!: Date;
+
+  @Column()
   location!: location;
 
   // Se define una relación OneToMany con BeaconMessage, es decir, un
