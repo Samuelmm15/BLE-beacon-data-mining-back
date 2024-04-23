@@ -15,10 +15,11 @@ createConnection()
   });
 
 const app = express();
+const reactPort = 3001;
 const port = 3000;
 
 const corsOptions = {
-  origin: `http://localhost:${port}`,
+  origin: `http://localhost:${reactPort}`,
   optionsSuccessStatus: 200,
 };
 
