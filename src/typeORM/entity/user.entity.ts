@@ -1,8 +1,9 @@
 import { ObjectId } from "mongodb";
-import { Entity, ObjectIdColumn, Column, BeforeInsert } from "typeorm";
+import { Entity, ObjectIdColumn, Column, BeforeInsert, Unique } from "typeorm";
 import * as bcrypt from 'bcrypt';
 
 @Entity()
+@Unique(["email"])
 export class User {
   @ObjectIdColumn()
   _id!: ObjectId;
