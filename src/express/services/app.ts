@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import { createConnection } from "typeorm";
+import https from 'https';
+import fs from 'fs';
 
 import trackerDataRouter from "../routes/trackerData";
 import beaconMessageRouter from "../routes/beaconMessage";
@@ -20,7 +22,7 @@ const reactPort = 3001;
 const port = 3000;
 
 const corsOptions = {
-  origin: `http://localhost:${reactPort}`,
+  origin: `https://localhost:${reactPort}`,
   optionsSuccessStatus: 200,
 };
 
@@ -32,6 +34,11 @@ app.use("/api/beaconMessage", beaconMessageRouter);
 app.use("/api/beacon", beaconRouter);
 app.use("/api/user", UserRouter);
 
-app.listen(port, () => {
+const options = {
+  key: fs.readFileSync('clave.pem'),
+  cert: fs.readFileSync('certificado.pem')
+};
+
+https.createServer(options, app).listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
