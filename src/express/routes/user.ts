@@ -44,6 +44,27 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Operación de obtención de un dato específico del usuario mediante el correo electrónico (GetDataEmail)
+router.get("/email/:email", async (req, res) => {
+  const userRepository = getRepository(User);
+
+  try {
+    const email = req.params.email;
+    const userByEmail = await userRepository.findOne({
+      where: { email: email },
+    });
+
+    if (!userByEmail) {
+      return res.status(404).json({ message: "Documento no encontrado" });
+    }
+
+    res.json(userByEmail).status(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+});
+
 // Creación de un nuevo usuario (CreateData)
 router.post("/", async (req, res) => {
   const userRepository = getRepository(User);
@@ -60,7 +81,11 @@ router.post("/", async (req, res) => {
     res.json(newUser).status(201);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "El correo ya se encuentra asociado a un usuario existente" });
+    res
+      .status(500)
+      .json({
+        message: "El correo ya se encuentra asociado a un usuario existente",
+      });
   }
 });
 
