@@ -3,6 +3,7 @@ import { getRepository } from "typeorm";
 import { User } from "../../typeORM/entity/user.entity";
 import { ObjectId } from "mongodb";
 import { validate } from "class-validator";
+import * as bcrypt from "bcrypt";
 
 const router = express.Router();
 
@@ -44,21 +45,28 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Operación de obtención de un dato específico del usuario mediante el correo electrónico (GetDataEmail)
-router.get("/email/:email", async (req, res) => {
+// Operación de inicio de sesión de un usuario (Login)
+// Inicio de sesión de usuario
+router.post("/login", async (req, res) => {
   const userRepository = getRepository(User);
 
   try {
-    const email = req.params.email;
-    const userByEmail = await userRepository.findOne({
-      where: { email: email },
-    });
+    const { email, password } = req.body;
+    const user = await userRepository.findOne({ where: { email } });
 
-    if (!userByEmail) {
-      return res.status(404).json({ message: "Documento no encontrado" });
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
-    res.json(userByEmail).status(200);
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ message: "Contraseña incorrecta" });
+    }
+
+    const token = user.generateJWT();
+
+    res.json({ token }).status(200);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error interno del servidor" });
