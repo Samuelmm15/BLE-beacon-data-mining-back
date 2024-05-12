@@ -24,6 +24,7 @@ const port = 3000;
 const corsOptions = {
   origin: `https://localhost:${reactPort}`,
   optionsSuccessStatus: 200,
+  credentials: true,
 };
 
 app.use(cors(corsOptions));

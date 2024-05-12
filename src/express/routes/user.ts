@@ -4,6 +4,7 @@ import { User } from "../../typeORM/entity/user.entity";
 import { ObjectId } from "mongodb";
 import { validate } from "class-validator";
 import * as bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -45,6 +46,13 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+function generateJWT(user: any) {
+  const secret: string = process.env.JWT_SECRET ?? "";
+  const payload = { userId: user.email };
+  const token = jwt.sign(payload, secret);
+  return token;
+}
+
 // Operación de inicio de sesión de un usuario (Login)
 // Inicio de sesión de usuario
 router.post("/login", async (req, res) => {
@@ -64,9 +72,9 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Contraseña incorrecta" });
     }
 
-    const token = user.generateJWT();
+    const token = generateJWT(user);
 
-    res.json({ token }).status(200);
+    res.status(200).send({ message: "Inicio de sesión exitoso", token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error interno del servidor" });
@@ -89,11 +97,9 @@ router.post("/", async (req, res) => {
     res.json(newUser).status(201);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        message: "El correo ya se encuentra asociado a un usuario existente",
-      });
+    res.status(500).json({
+      message: "El correo ya se encuentra asociado a un usuario existente",
+    });
   }
 });
 
