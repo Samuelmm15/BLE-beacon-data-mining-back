@@ -8,7 +8,7 @@ export class Beacon {
   @ObjectIdColumn()
   _id!: ObjectId;
 
-  @Column({ unique: true })
+  @Column()
   beaconId!: string;
 
   @Column()
