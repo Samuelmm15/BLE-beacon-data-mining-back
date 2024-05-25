@@ -8,6 +8,7 @@ import trackerDataRouter from "../routes/trackerData";
 import beaconMessageRouter from "../routes/beaconMessage";
 import beaconRouter from "../routes/beacon";
 import UserRouter from "../routes/user";
+import beaconOperationsRouter from "../routes/beaconOperations";
 
 createConnection()
   .then(() => {
@@ -34,6 +35,7 @@ app.use("/api/trackerData", trackerDataRouter);
 app.use("/api/beaconMessage", beaconMessageRouter);
 app.use("/api/beacon", beaconRouter);
 app.use("/api/user", UserRouter);
+app.use("/api/beaconOperations", beaconOperationsRouter);
 
 const options = {
   key: fs.readFileSync('clave.pem'),
