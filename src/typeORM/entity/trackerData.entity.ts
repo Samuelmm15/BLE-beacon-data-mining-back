@@ -6,7 +6,7 @@ export default interface location {
   latitude: number;
   longitude: number;
   altitude: number;
-  bearing: number;
+  bearing: string;
   speed: string;
 }
 
