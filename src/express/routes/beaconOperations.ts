@@ -21,8 +21,10 @@ router.post("/", async (req, res) => {
       beacon.time <= time
     );
 
-    console.log(filteredBeacons)
-    res.json({ count: filteredBeacons.length });
+    const totalSpeed = filteredBeacons.reduce((total, beacon) => total + parseFloat(beacon.location.speed), 0);
+    const averageSpeed = filteredBeacons.length > 0 ? totalSpeed / filteredBeacons.length : 0;
+
+    res.json({ count: filteredBeacons.length, averageSpeed });
 
   } catch (error) {
     console.error(error);

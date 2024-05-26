@@ -7,7 +7,7 @@ export default interface location {
   longitude: number;
   altitude: number;
   bearing: number;
-  speed: number;
+  speed: string;
 }
 
 @Entity()
