@@ -59,7 +59,7 @@ router.post("/", async (req, res) => {
     const data = labels.map((label, i) => ({ name: label, star: bins[i] }));
 
     res.json({
-      count: filteredBeacons.length,
+      beacons: filteredBeacons.length,
       averageSpeed: averageSpeed,
       radarChartData: data,
     });
