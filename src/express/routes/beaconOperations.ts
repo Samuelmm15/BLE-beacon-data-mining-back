@@ -54,24 +54,14 @@ router.post("/", async (req, res) => {
     // Prepare data for radar chart
     const labels = Array.from(
       { length: numBins },
-      (_, i) => i * (360 / numBins)
+      (_, i) => `B${i * (360 / numBins)}`
     );
-    const data = bins;
-
-    const radarChartData = {
-      labels: labels,
-      datasets: [
-        {
-          data: data,
-          label: "Beacon Count",
-        },
-      ],
-    };
+    const data = labels.map((label, i) => ({ name: label, star: bins[i] }));
 
     res.json({
       count: filteredBeacons.length,
       averageSpeed: averageSpeed,
-      radarChartData: radarChartData,
+      radarChartData: data,
     });
   } catch (error) {
     console.error(error);
