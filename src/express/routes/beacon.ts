@@ -24,6 +24,25 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Operación de obtención de todos los identificadores de manera única de los beacons
+router.get("/ids", async (req, res) => {
+  const beaconRepository = getRepository(Beacon);
+
+  try {
+    const allBeacons = await beaconRepository.find();
+    const allIds = allBeacons.map((beacon) => beacon.beaconId);
+    const uniqueIds = [...new Set(allIds)]; // Convertir a Set para eliminar duplicados, luego convertir de nuevo a Array
+
+    if (uniqueIds.length === 0) {
+      return res.status(404).json({ message: "No hay documentos" });
+    }
+    res.status(200).json(uniqueIds); // Cambiar el orden de las llamadas
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+});
+
 // Operación de obtención de un beacon específico mediante el identificador del documento (GetBeaconID)
 router.get("/:id", async (req, res) => {
   const beaconRepository = getRepository(Beacon);
