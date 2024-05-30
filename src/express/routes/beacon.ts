@@ -27,11 +27,9 @@ router.get("/", async (req, res) => {
 // Operación de obtención de un beacon específico mediante el identificador del documento (GetBeaconID)
 router.get("/:id", async (req, res) => {
   const beaconRepository = getRepository(Beacon);
-
   try {
-    const id = new ObjectId(req.params.id);
-    const beaconById = await beaconRepository.findOne({
-      where: { _id: id },
+    const beaconById = await beaconRepository.find({
+      where: { beaconId: req.params.id },
     });
 
     if (!beaconById) {
