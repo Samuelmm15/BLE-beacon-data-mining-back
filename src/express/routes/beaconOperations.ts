@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
         beacon.location.latitude <= Math.max(_southWest.lat, _northEast.lat) &&
         beacon.location.longitude >= Math.min(_southWest.lng, _northEast.lng) &&
         beacon.location.longitude <= Math.max(_southWest.lng, _northEast.lng) &&
-        beacon.time <= time
+        beacon.time === time
     );
 
     //! Cálculo del promedio de la velocidad de los beacons
