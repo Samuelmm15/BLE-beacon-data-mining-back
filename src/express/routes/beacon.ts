@@ -31,12 +31,12 @@ router.get("/ids", async (req, res) => {
   try {
     const allBeacons = await beaconRepository.find();
     const allIds = allBeacons.map((beacon) => beacon.beaconId);
-    const uniqueIds = [...new Set(allIds)]; // Convertir a Set para eliminar duplicados, luego convertir de nuevo a Array
+    const uniqueIds = [...new Set(allIds)];
 
     if (uniqueIds.length === 0) {
       return res.status(404).json({ message: "No hay documentos" });
     }
-    res.status(200).json(uniqueIds); // Cambiar el orden de las llamadas
+    res.status(200).json(uniqueIds);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error interno del servidor" });
@@ -47,15 +47,29 @@ router.get("/ids", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const beaconRepository = getRepository(Beacon);
   try {
-    const beaconById = await beaconRepository.find({
-      where: { beaconId: req.params.id },
-    });
+    const { id } = req.params;
+    const startDate = req.query.startDate;
+    const endDate = req.query.endDate;
 
-    if (!beaconById) {
-      return res.status(404).json({ message: "Documento no encontrado" });
+    let options: { where: { beaconId: string; time?: any } } = { where: { beaconId: id } };
+
+    if (startDate && endDate) {
+      const start = new Date(startDate as string).toISOString().split('.')[0];
+      const end = new Date(endDate as string).toISOString().split('.')[0];
+
+      options.where.time = {
+        $gte: start,
+        $lte: end,
+      };
     }
 
-    res.json(beaconById).status(200);
+    const beacons = await beaconRepository.find(options);
+
+    if (!beacons.length) {
+      return res.status(404).json(beacons);
+    }
+
+    res.json(beacons).status(200);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error interno del servidor" });
