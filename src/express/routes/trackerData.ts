@@ -23,21 +23,53 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Operación de obtención de todos los identificadores de manera única de los beacons
+router.get("/ids", async (req, res) => {
+  const trackerDataRepository = getRepository(TrackerData);
+
+  try {
+    const allTrackers = await trackerDataRepository.find();
+    const allIds = allTrackers.map((tracker) => tracker.droneId);
+    const uniqueIds = [...new Set(allIds)];
+
+    if (uniqueIds.length === 0) {
+      return res.status(404).json({ message: "No hay documentos" });
+    }
+    res.status(200).json(uniqueIds);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+});
+
 // Operación de obtención de un dato específico del trackerData mediante el identificador del documento (GetDataID)
 router.get("/:id", async (req, res) => {
   const trackerDataRepository = getRepository(TrackerData);
 
   try {
-    const id = new ObjectId(req.params.id);
-    const trackerDataById = await trackerDataRepository.findOne({
-      where: { _id: id },
-    });
+    const { id } = req.params;
+    const startDate = req.query.startDate;
+    const endDate = req.query.endDate;
 
-    if (!trackerDataById) {
-      return res.status(404).json({ message: "Documento no encontrado" });
+    let options: { where: { droneId: string; time?: any } } = { where: { droneId: id } };
+
+    if (startDate && endDate) {
+      const start = new Date(startDate as string).toISOString().split('.')[0];
+      const end = new Date(endDate as string).toISOString().split('.')[0];
+
+      options.where.time = {
+        $gte: start,
+        $lte: end,
+      };
     }
 
-    res.json(trackerDataById).status(200);
+    const trackers = await trackerDataRepository.find(options);
+
+    if (!trackers.length) {
+      return res.status(200).json(trackers);
+    }
+
+    res.json(trackers).status(200);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error interno del servidor" });
