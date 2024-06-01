@@ -66,7 +66,7 @@ router.get("/:id", async (req, res) => {
     const beacons = await beaconRepository.find(options);
 
     if (!beacons.length) {
-      return res.status(404).json(beacons);
+      return res.status(200).json(beacons);
     }
 
     res.json(beacons).status(200);
