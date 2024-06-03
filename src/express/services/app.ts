@@ -9,6 +9,7 @@ import beaconMessageRouter from "../routes/beaconMessage";
 import beaconRouter from "../routes/beacon";
 import UserRouter from "../routes/user";
 import beaconOperationsRouter from "../routes/beaconOperations";
+import ResetPasswordRouter from "../routes/resetPassword";
 
 createConnection()
   .then(() => {
@@ -36,6 +37,7 @@ app.use("/api/beaconMessage", beaconMessageRouter);
 app.use("/api/beacon", beaconRouter);
 app.use("/api/user", UserRouter);
 app.use("/api/beaconOperations", beaconOperationsRouter);
+app.use("/api/resetPassword", ResetPasswordRouter);
 
 const options = {
   key: fs.readFileSync('clave.pem'),
