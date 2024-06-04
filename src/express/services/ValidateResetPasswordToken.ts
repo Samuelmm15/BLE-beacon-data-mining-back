@@ -4,7 +4,7 @@ import { getRepository } from "typeorm";
 
 export async function validateResetPasswordToken(
   token: string,
-  actualTime: number
+  actualTime: string
 ) {
   const resetPasswordRepository = getRepository(ResetPassword);
   const resetPassword = await resetPasswordRepository.findOne({
@@ -15,7 +15,10 @@ export async function validateResetPasswordToken(
     throw new Error("Token no encontrado");
   }
 
-  if (actualTime > resetPassword.expiresAt.getTime()) {
+  const actualDate = new Date(actualTime);
+  const expiresAt = new Date(resetPassword.expiresAt);
+
+  if (actualDate > expiresAt) {
     throw new Error("Token expirado");
   }
 

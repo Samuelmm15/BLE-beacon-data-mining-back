@@ -39,7 +39,7 @@ export async function sendPasswordResetEmail(email: string) {
     from: process.env.EMAIL_USERNAME,
     to: user.email,
     subject: "Restablecimiento de contraseña",
-    text: `Hola ${user.name},\n\nPara restablecer tu contraseña, por favor haz clic en el siguiente enlace:\n\nhttps://localhost:3000/reset-password/${token}\n\nSi no has solicitado un restablecimiento de contraseña, por favor ignora este correo.\n`,
+    text: `Hola ${user.name},\n\nPara restablecer tu contraseña, por favor haz clic en el siguiente enlace:\n\nhttps://localhost:3001/reset-password/${token}\n\nSi no has solicitado un restablecimiento de contraseña, por favor ignora este correo.\n`,
   };
 
   // Envía el correo
