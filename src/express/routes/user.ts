@@ -16,12 +16,12 @@ router.get("/", async (req, res) => {
     const allUsers = await userRepository.find();
 
     if (!allUsers) {
-      return res.status(404).json({ message: "No hay documentos" });
+      return res.status(404).json({ message: "No documents" });
     }
     res.json(allUsers).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -36,13 +36,13 @@ router.get("/:id", async (req, res) => {
     });
 
     if (!userById) {
-      return res.status(404).json({ message: "Documento no encontrado" });
+      return res.status(404).json({ message: "No documents" });
     }
 
     res.json(userById).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -63,21 +63,21 @@ router.post("/login", async (req, res) => {
     const user = await userRepository.findOne({ where: { email } });
 
     if (!user) {
-      return res.status(404).json({ message: "Usuario no encontrado" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ message: "Contraseña incorrecta" });
+      return res.status(401).json({ message: "Incorrect password" });
     }
 
     const token = generateJWT(user);
 
-    res.status(200).send({ message: "Inicio de sesión exitoso", token });
+    res.status(200).send({ message: "Successful login", token });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -98,7 +98,7 @@ router.post("/", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      message: "El correo ya se encuentra asociado a un usuario existente",
+      message: "The email is already associated to an existing user.",
     });
   }
 });
@@ -114,7 +114,7 @@ router.put("/:id", async (req, res) => {
     });
 
     if (!userById) {
-      return res.status(404).json({ message: "Documento no encontrado" });
+      return res.status(404).json({ message: "No document" });
     }
 
     userRepository.merge(userById, req.body);
@@ -123,7 +123,7 @@ router.put("/:id", async (req, res) => {
     res.json(updatedUser).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

@@ -15,12 +15,12 @@ router.get("/", async (req, res) => {
     const allBeacons = await beaconRepository.find();
 
     if (allBeacons.length === 0) {
-      return res.status(404).json({ message: "No hay documentos" });
+      return res.status(404).json({ message: "No documents" });
     }
     res.json(allBeacons).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -34,12 +34,12 @@ router.get("/ids", async (req, res) => {
     const uniqueIds = [...new Set(allIds)];
 
     if (uniqueIds.length === 0) {
-      return res.status(404).json({ message: "No hay documentos" });
+      return res.status(404).json({ message: "No documents" });
     }
     res.status(200).json(uniqueIds);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -72,7 +72,7 @@ router.get("/:id", async (req, res) => {
     res.json(beacons).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -91,7 +91,7 @@ router.post("/", async (req, res) => {
     res.json(result).status(201);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -105,7 +105,7 @@ router.put("/:id", async (req, res) => {
     const beacon = await beaconRepository.findOne({ where: { _id: id } });
 
     if (!beacon) {
-      return res.status(404).json({ message: "Documento no encontrado" });
+      return res.status(404).json({ message: "Document not found" });
     }
 
     // Fusionar los datos del cuerpo de la solicitud con el beacon existente
@@ -119,7 +119,7 @@ router.put("/:id", async (req, res) => {
           where: { _id: idMessage },
         });
         if (!message) {
-          throw new Error(`Mensaje no encontrado: ${messageId}`);
+          throw new Error(`Message not found: ${messageId}`);
         }
         return message._id; // Guardar solo el identificador del mensaje
       })
@@ -137,7 +137,7 @@ router.put("/:id", async (req, res) => {
     res.json(result).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -152,14 +152,14 @@ router.delete("/:id", async (req, res) => {
     });
 
     if (!beaconById) {
-      return res.status(404).json({ message: "Documento no encontrado" });
+      return res.status(404).json({ message: "Document not found" });
     }
 
     await beaconRepository.delete(id);
     res.json(beaconById).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

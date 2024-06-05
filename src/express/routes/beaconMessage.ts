@@ -14,12 +14,12 @@ router.get("/", async (req, res) => {
     const allBeaconMessages = await beaconMessageRepository.find();
 
     if (allBeaconMessages.length === 0) {
-      return res.status(404).json({ message: "No hay documentos" });
+      return res.status(404).json({ message: "No documents" });
     }
     res.json(allBeaconMessages).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -34,13 +34,13 @@ router.get("/:id", async (req, res) => {
     });
 
     if (!beaconMessageById) {
-      return res.status(404).json({ message: "Documento no encontrado" });
+      return res.status(404).json({ message: "Document not found" });
     }
 
     res.json(beaconMessageById).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -59,7 +59,7 @@ router.post("/", async (req, res) => {
     res.json(result).status(201);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -74,7 +74,7 @@ router.put("/:id", async (req, res) => {
     });
 
     if (!beaconMessageById) {
-      return res.status(404).json({ message: "Documento no encontrado" });
+      return res.status(404).json({ message: "Document not found" });
     }
 
     beaconMessageRepository.merge(beaconMessageById, req.body);
@@ -82,7 +82,7 @@ router.put("/:id", async (req, res) => {
     res.json(result).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -97,14 +97,14 @@ router.delete("/:id", async (req, res) => {
     });
 
     if (!beaconMessageById) {
-      return res.status(404).json({ message: "Documento no encontrado" });
+      return res.status(404).json({ message: "Document not found" });
     }
 
     await beaconMessageRepository.delete(id);
     res.json(beaconMessageById).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

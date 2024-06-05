@@ -14,12 +14,12 @@ router.get("/", async (req, res) => {
     const allTrackerData = await trackerDataRepository.find();
 
     if (!allTrackerData) {
-      return res.status(404).json({ message: "No hay documentos" });
+      return res.status(404).json({ message: "No documents" });
     }
     res.json(allTrackerData).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -33,12 +33,12 @@ router.get("/ids", async (req, res) => {
     const uniqueIds = [...new Set(allIds)];
 
     if (uniqueIds.length === 0) {
-      return res.status(404).json({ message: "No hay documentos" });
+      return res.status(404).json({ message: "No documents" });
     }
     res.status(200).json(uniqueIds);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -72,7 +72,7 @@ router.get("/:id", async (req, res) => {
     res.json(trackers).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -87,13 +87,13 @@ router.get("/drone/:droneId", async (req, res) => {
     });
 
     if (!trackerDataByDroneId) {
-      return res.status(404).json({ message: "Documento no encontrado" });
+      return res.status(404).json({ message: "Document not found" });
     }
 
     res.json(trackerDataByDroneId).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -106,14 +106,14 @@ router.post("/", async (req, res) => {
 
     const errors = await validate(newTrackerData);
     if (errors.length > 0) {
-      return res.status(400).json({ message: "RSSI fuera de rango", errors });
+      return res.status(400).json({ message: "RSSI out of range", errors });
     }
 
     await trackerDataRepository.save(newTrackerData);
     res.status(200).json(newTrackerData);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -128,14 +128,14 @@ router.delete("/:id", async (req, res) => {
     });
 
     if (!trackerDataById) {
-      return res.status(404).json({ message: "Documento no encontrado" });
+      return res.status(404).json({ message: "Document not found" });
     }
 
     await trackerDataRepository.delete(id);
     res.json(trackerDataById).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -150,7 +150,7 @@ router.put("/:id", async (req, res) => {
     });
 
     if (!trackerDataById) {
-      return res.status(404).json({ message: "Documento no encontrado" });
+      return res.status(404).json({ message: "Document not found" });
     }
 
     trackerDataRepository.merge(trackerDataById, req.body);
@@ -161,7 +161,7 @@ router.put("/:id", async (req, res) => {
     res.json(updatedTrackerData).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

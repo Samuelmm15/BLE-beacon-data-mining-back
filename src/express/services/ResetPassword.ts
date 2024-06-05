@@ -9,7 +9,7 @@ export async function sendPasswordResetEmail(email: string) {
   const user = await userRepository.findOne({ where: { email } });
 
   if (!user) {
-    throw new Error("Usuario no encontrado");
+    throw new Error("User not found");
   }
 
   // Genera un token de restablecimiento de contraseña
@@ -38,8 +38,8 @@ export async function sendPasswordResetEmail(email: string) {
   let mailOptions = {
     from: process.env.EMAIL_USERNAME,
     to: user.email,
-    subject: "Restablecimiento de contraseña",
-    text: `Hola ${user.name},\n\nPara restablecer tu contraseña, por favor haz clic en el siguiente enlace:\n\nhttps://localhost:3001/reset-password/${token}\n\nSi no has solicitado un restablecimiento de contraseña, por favor ignora este correo.\n`,
+    subject: "Password Reset Request",
+    text: `Hi ${user.name},\n\nTo reset your password, please click on the following link:\n\nhttps://localhost:3001/reset-password/${token}\n\nIf you have not requested a password reset, please ignore this email.\n`,
   };
 
   // Envía el correo
