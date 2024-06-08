@@ -50,6 +50,9 @@ router.get("/:id", async (req, res) => {
     const { id } = req.params;
     const startDate = req.query.startDate;
     const endDate = req.query.endDate;
+    const specificDate = req.query.specificDate;
+    const startHour = req.query.startHour;
+    const endHour = req.query.endHour;
 
     let options: { where: { beaconId: string; time?: any } } = { where: { beaconId: id } };
 
@@ -57,6 +60,18 @@ router.get("/:id", async (req, res) => {
       const start = new Date(startDate as string).toISOString().split('.')[0];
       const end = new Date(endDate as string).toISOString().split('.')[0];
 
+      options.where.time = {
+        $gte: start,
+        $lte: end,
+      };
+    }
+
+    if (specificDate) {
+      const start = new Date(`${specificDate as string}T${startHour as string}Z`).toISOString().split('.')[0];
+      const end = new Date(`${specificDate as string}T${endHour as string}Z`).toISOString().split('.')[0];
+      console.log(start)
+      console.log(end)
+    
       options.where.time = {
         $gte: start,
         $lte: end,
