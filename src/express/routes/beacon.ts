@@ -19,7 +19,6 @@ router.get("/", async (req, res) => {
     }
     res.json(allBeacons).status(200);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -38,7 +37,73 @@ router.get("/ids", async (req, res) => {
     }
     res.status(200).json(uniqueIds);
   } catch (error) {
-    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Operación de obtención de todos los beacons que se encuentran dentro de un rango de fecha
+router.get("/allBeaconsByDateRange", async (req, res) => {
+  const beaconRepository = getRepository(Beacon);
+  try {
+    const startDate = req.query.startDate;
+    const endDate = req.query.endDate;
+
+    let options: { where: { time: any } } = { where: {time: {}} };
+
+    if (startDate && endDate) {
+      const start = new Date(startDate as string).toISOString().split(".")[0];
+      const end = new Date(endDate as string).toISOString().split(".")[0];
+
+      options.where.time = {
+        $gte: start,
+        $lte: end,
+      };
+    }
+
+    const beacons = await beaconRepository.find(options);
+
+    if (!beacons.length) {
+      return res.status(200).json(beacons);
+    }
+
+    res.json(beacons).status(200);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Operación de obtención de todos los beacons que se encuentran dentro de una fecha específica en unas horas en concreto
+router.get("/allBeaconsByHourRange", async (req, res) => {
+  const beaconRepository = getRepository(Beacon);
+  try {
+    const date = req.query.date;
+    const startHour = req.query.startHour;
+    const endHour = req.query.endHour;
+
+    let options: { where: { time?: any } } = { where: {} };
+
+    if (date && startHour && endHour) {
+      const start = new Date(`${date as string}T${startHour as string}Z`)
+        .toISOString()
+        .split(".")[0];
+      const end = new Date(`${date as string}T${endHour as string}Z`)
+        .toISOString()
+        .split(".")[0];
+
+      options.where.time = {
+        $gte: start,
+        $lte: end,
+      };
+    }
+
+    const beacons = await beaconRepository.find(options);
+
+    if (!beacons.length) {
+      return res.status(200).json(beacons);
+    }
+
+    res.json(beacons).status(200);
+  } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -54,11 +119,13 @@ router.get("/:id", async (req, res) => {
     const startHour = req.query.startHour;
     const endHour = req.query.endHour;
 
-    let options: { where: { beaconId: string; time?: any } } = { where: { beaconId: id } };
+    let options: { where: { beaconId: string; time?: any } } = {
+      where: { beaconId: id },
+    };
 
     if (startDate && endDate) {
-      const start = new Date(startDate as string).toISOString().split('.')[0];
-      const end = new Date(endDate as string).toISOString().split('.')[0];
+      const start = new Date(startDate as string).toISOString().split(".")[0];
+      const end = new Date(endDate as string).toISOString().split(".")[0];
 
       options.where.time = {
         $gte: start,
@@ -67,11 +134,15 @@ router.get("/:id", async (req, res) => {
     }
 
     if (specificDate) {
-      const start = new Date(`${specificDate as string}T${startHour as string}Z`).toISOString().split('.')[0];
-      const end = new Date(`${specificDate as string}T${endHour as string}Z`).toISOString().split('.')[0];
-      console.log(start)
-      console.log(end)
-    
+      const start = new Date(
+        `${specificDate as string}T${startHour as string}Z`
+      )
+        .toISOString()
+        .split(".")[0];
+      const end = new Date(`${specificDate as string}T${endHour as string}Z`)
+        .toISOString()
+        .split(".")[0];
+
       options.where.time = {
         $gte: start,
         $lte: end,
@@ -86,7 +157,6 @@ router.get("/:id", async (req, res) => {
 
     res.json(beacons).status(200);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -105,7 +175,6 @@ router.post("/", async (req, res) => {
     const result = await beaconRepository.save(newBeacon);
     res.json(result).status(201);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -151,7 +220,6 @@ router.put("/:id", async (req, res) => {
     const result = await beaconRepository.update(id, beacon);
     res.json(result).status(200);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -173,7 +241,6 @@ router.delete("/:id", async (req, res) => {
     await beaconRepository.delete(id);
     res.json(beaconById).status(200);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
