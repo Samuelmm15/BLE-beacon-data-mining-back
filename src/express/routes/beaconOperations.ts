@@ -54,7 +54,7 @@ router.post("/", async (req, res) => {
     // Prepare data for radar chart
     const labels = Array.from(
       { length: numBins },
-      (_, i) => `B${i * (360 / numBins)}`
+      (_, i) => `${i * (360 / numBins)}º`
     );
     const data = labels.map((label, i) => ({ name: label, star: bins[i] }));
 
