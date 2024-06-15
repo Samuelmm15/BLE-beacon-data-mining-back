@@ -48,7 +48,7 @@ router.get("/:id", async (req, res) => {
 
 function generateJWT(user: any) {
   const secret: string = process.env.JWT_SECRET ?? "";
-  const payload = { userId: user.email };
+  const payload = { userId: user.name };
   const token = jwt.sign(payload, secret);
   return token;
 }
