@@ -4,6 +4,7 @@ import { ObjectId } from "mongodb";
 import { Beacon } from "../../typeORM/entity/beacon.entity";
 import { BeaconMessage } from "../../typeORM/entity/beaconMessage.entity";
 import { validate } from "class-validator";
+import moment from "moment";
 
 const router = express.Router();
 
@@ -146,6 +147,36 @@ router.get("/:id", async (req, res) => {
       options.where.time = {
         $gte: start,
         $lte: end,
+      };
+    }
+
+    const beacons = await beaconRepository.find(options);
+
+    if (!beacons.length) {
+      return res.status(200).json(beacons);
+    }
+
+    res.json(beacons).status(200);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Operación para obtener todos los beacons con el mismo id cuyo tiempo de recogida fue anterior al que se le pasa
+router.get("/beaconsByBeforeTime/:id", async (req, res) => {
+  const beaconRepository = getRepository(Beacon);
+  try {
+    const { id } = req.params;
+    const time = req.query.time;
+
+    let options: { where: { beaconId: string; time?: any } } = {
+      where: { beaconId: id },
+    };
+
+    if (time) {
+      const momentTime = moment(time as string).format();
+      options.where.time = {
+        $lte: momentTime,
       };
     }
 
