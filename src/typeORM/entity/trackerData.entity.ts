@@ -1,6 +1,5 @@
 import { ObjectId } from "mongodb";
 import { Entity, ObjectIdColumn, Column } from "typeorm";
-import { IsInt, Min, Max } from "class-validator";
 
 export default interface location {
   latitude: number;
@@ -24,9 +23,4 @@ export class TrackerData {
   @Column()
   location!: location;
 
-  @Column()
-  @IsInt()
-  @Min(1)
-  @Max(5)
-  rssi!: number;
 }

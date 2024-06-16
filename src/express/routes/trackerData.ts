@@ -198,7 +198,7 @@ router.post("/", async (req, res) => {
 
     const errors = await validate(newTrackerData);
     if (errors.length > 0) {
-      return res.status(400).json({ message: "RSSI out of range", errors });
+      return res.status(400).json(errors);
     }
 
     await trackerDataRepository.save(newTrackerData);

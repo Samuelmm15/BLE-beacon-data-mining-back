@@ -48,7 +48,7 @@ router.get("/allBeaconsByDateRange", async (req, res) => {
     const startDate = req.query.startDate;
     const endDate = req.query.endDate;
 
-    let options: { where: { time: any } } = { where: {time: {}} };
+    let options: { where: { time: any } } = { where: { time: {} } };
 
     if (startDate && endDate) {
       const start = new Date(startDate as string).toISOString().split(".")[0];
@@ -169,7 +169,7 @@ router.post("/", async (req, res) => {
     const newBeacon = beaconRepository.create(req.body);
     const errors = await validate(newBeacon);
     if (errors.length > 0) {
-      return res.status(400).json(errors);
+      return res.status(400).json({ message: "RSSI out of range", errors });
     }
 
     const result = await beaconRepository.save(newBeacon);
