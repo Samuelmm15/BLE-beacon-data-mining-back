@@ -44,6 +44,4 @@ export async function sendPasswordResetEmail(email: string) {
 
   // Envía el correo
   let info = await transporter.sendMail(mailOptions);
-
-  console.log("Message sent: %s", info.messageId);
 }

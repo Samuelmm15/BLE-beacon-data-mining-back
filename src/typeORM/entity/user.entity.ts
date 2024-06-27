@@ -21,6 +21,9 @@ export class User {
   @Column()
   admin!: boolean;
 
+  @Column()
+  firstCreation!: boolean;
+
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);

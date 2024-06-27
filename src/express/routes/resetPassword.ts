@@ -39,6 +39,7 @@ router.post("/reset", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     user.password = hashedPassword;
+    user.firstCreation = false;
 
     await userRepository.save(user);
     res.status(200).json({ message: "Password reset" });
